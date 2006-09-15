@@ -24,14 +24,22 @@ import javax.imageio.ImageIO;
 public class ScaleImage {
   
   private final Image src;
+  private final int   x, y; // left-top coord. from which to start copying.
   private final int   srcWidth, srcHeight;
   private int         width, height;
   
   public ScaleImage(Image src) {
     
+    this(src, 0, 0, src.getWidth(null), src.getHeight(null));
+  }
+  
+  public ScaleImage(Image src, int x, int y, int srcWidth, int srcHeight) {
+    
     this.src = src;
-    this.srcWidth = this.width = src.getWidth(null);
-    this.srcHeight = this.height = src.getHeight(null);
+    this.x = x;
+    this.y = y;
+    this.srcWidth = this.width = srcWidth;
+    this.srcHeight = this.height = srcHeight;
   }
   
   public void setSize(int width, int height) {
@@ -65,8 +73,10 @@ public class ScaleImage {
     BufferedImage im = new BufferedImage(width, height,
                                          BufferedImage.TYPE_INT_RGB);
     Graphics2D g = (Graphics2D)im.getGraphics();
-    g.scale((double)width / (double)src.getWidth(null),
-            (double)height / (double)src.getHeight(null));
+    
+    g.scale((double)width / (double)srcWidth,
+            (double)height / (double)srcHeight);
+    g.translate(-x, -y);
     g.drawImage(src, 0, 0, null);
     ImageIO.write(im, "jpg", out);
   }
