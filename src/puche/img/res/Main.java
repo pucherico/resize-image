@@ -65,11 +65,12 @@ public class Main {
     if ((args.length != 4) && (args.length != 8)) {
       System.out.println("SINTAX:");
       System.out.println();
-      System.out.println("\tMain <img-src> [<xpos-src> <ypos-src> <width-src> <height-src>] <img-target> <width-target> <height-target> [<keep-rate>]");
+      System.out.println("\tjava -jar ResizeImage <img-src> [<xpos-src> <ypos-src> <width-src> <height-src>] <img-target> <width-target> <height-target>");
       System.out.println("\tor");
-      System.out.println("\tMain <dir-src> [<xpos-src> <ypos-src> <width-src> <height-src>] <dir-target> <width-target> <height-target> [<keep-rate>]");
+      System.out.println("\tjava -jar ResizeImage <dir-src> [<xpos-src> <ypos-src> <width-src> <height-src>] <dir-target> <width-target> <height-target>");
       System.out.println();
       System.out.println("Note: width and height could be absolute or relative to source image. e.g. 50%");
+      System.out.println("Note also that either width or height could be zero to mean proportional");
       System.exit(0);
     } else if (args.length == 4) {
       File src = new File(args[0]);
@@ -124,14 +125,9 @@ public class Main {
                                            widthSrc, heightSrc)
                           : new ScaleImage(ImageIO.read(imgSrc));
     OutputStream out =new BufferedOutputStream(new FileOutputStream(imgTarget));
-    if (wRelative)
-      model.setRelativeWidth(((double)widthTarget) / 100.0);
-    else
-      model.setWidth(widthTarget);
-    if (hRelative)
-      model.setRelativeHeight(((double)heightTarget) / 100.0);
-    else
-      model.setHeight(heightTarget);
+    double w = wRelative? ((double)widthTarget) / 100.0 : (double)widthTarget;
+    double h = hRelative? ((double)heightTarget) / 100.0 : (double)heightTarget;
+    model.setRelativeSize(w, wRelative, h, hRelative);
     model.generate(out);
     out.close();
     System.out.println("Processed: " + imgSrc);

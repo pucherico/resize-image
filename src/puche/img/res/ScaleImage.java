@@ -42,30 +42,76 @@ public class ScaleImage {
     this.srcHeight = this.height = srcHeight;
   }
   
+  protected void checkProportions() {
+  
+    if ((width == 0) && (height != 0))
+      setProportionalWidth();
+    else if ((height == 0) && (width != 0))
+      setProportionalHeight();
+  }
+  
+  /** 
+   * it's allowed a zero-width or zero-height (but not both). This means that
+   * the corresponding data will be calculated asuring to keep the rate of the
+   * target image.
+   */
   public void setSize(int width, int height) {
     
     this.width = width;
     this.height = height;
+    checkProportions();
   }
-  
+  /*
   public void setWidth(int width) {
     
     this.width = width;
+    checkProportions();
   }
   
   public void setHeight(int height) {
     
     this.height = height;
+    checkProportions();
   }
+  */
   
+  public void setRelativeSize(double w, boolean relativeWidth,
+                              double h, boolean relativeHeight) {
+    if (relativeWidth)
+      this.width = (int)(((double)srcWidth) * w);
+    else
+      this.width = (int)w;
+    
+    if (relativeHeight)
+      this.height = (int)(((double)srcHeight) * h);
+    else
+      this.height = (int)h;
+    
+    checkProportions();
+  }
+  /*
   public void setRelativeWidth(double alfa) {
     
     width = (int)(((double)srcWidth) * alfa);
+    checkProportions();
   }
   
   public void setRelativeHeight(double alfa) {
     
     height = (int)(((double)srcHeight) * alfa);
+    checkProportions();
+  }*/
+  
+  /** define target width keeping the rate of the image knowing the target height and src image dimension */
+  private void setProportionalWidth() {
+   
+    this.width = srcWidth * height / srcHeight;
+  }
+  
+  /** define target height keeping the rate of the image knowing the target width and src image dimension */
+  private void setProportionalHeight() {
+   
+    this.height = srcHeight * width / srcWidth;
   }
   
   public void generate(OutputStream out) throws IOException {
