@@ -89,26 +89,20 @@ public class ScaleImage {
     
     checkProportions();
   }
-  /*
-  public void setRelativeWidth(double alfa) {
-    
-    width = (int)(((double)srcWidth) * alfa);
-    checkProportions();
-  }
   
-  public void setRelativeHeight(double alfa) {
-    
-    height = (int)(((double)srcHeight) * alfa);
-    checkProportions();
-  }*/
-  
-  /** define target width keeping the rate of the image knowing the target height and src image dimension */
+  /**
+   * define target width keeping the rate of the image knowing the target height
+   * and src image dimension
+   */
   private void setProportionalWidth() {
    
     this.width = srcWidth * height / srcHeight;
   }
   
-  /** define target height keeping the rate of the image knowing the target width and src image dimension */
+  /** 
+   * define target height keeping the rate of the image knowing the target width
+   * and src image dimension
+   */
   private void setProportionalHeight() {
    
     this.height = srcHeight * width / srcWidth;
