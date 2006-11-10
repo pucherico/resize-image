@@ -66,4 +66,16 @@
     nbproject/build-impl.xml file. 
 
     -->
+    
+  <target name="-post-init">
+    <tstamp>
+     <format property="fecha" pattern="yyMMdd-HHmm" />
+    </tstamp>
+  </target>
+  
+  <target name="zip" depends="clean">
+    <zip destfile="${basedir}/../ResizeImage${fecha}.zip" >
+      <zipfileset dir="${basedir}" prefix="ResizeImage" />
+    </zip>
+  </target>
 </project>
