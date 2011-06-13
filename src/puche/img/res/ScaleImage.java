@@ -9,13 +9,10 @@
 
 package puche.img.res;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.OutputStream;
-import javax.imageio.ImageIO;
 
 /**
  *
@@ -108,7 +105,7 @@ public class ScaleImage {
     this.height = srcHeight * width / srcWidth;
   }
   
-  public void generate(OutputStream out) throws IOException {
+  public BufferedImage generate() throws IOException {
     
     BufferedImage im = new BufferedImage(width, height,
                                          BufferedImage.TYPE_INT_RGB);
@@ -118,6 +115,6 @@ public class ScaleImage {
             (double)height / (double)srcHeight);
     g.translate(-x, -y);
     g.drawImage(src, 0, 0, null);
-    ImageIO.write(im, "jpg", out);
+    return im;
   }
 }
