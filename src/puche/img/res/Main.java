@@ -152,7 +152,8 @@ public class Main {
     model.setRelativeSize(w, wRelative, h, hRelative);
     BufferedImage biGen = model.generate();
 
-    iw.write(null, new IIOImage(biGen, null, m), param);
+    // Bug? Demos excluir los metadatos (m) en imágenes verticales (si no sale mal la imagen!!!)
+    iw.write(null, new IIOImage(biGen, null, biSrc.getWidth() > biSrc.getHeight()? m : null), param);
     fos.close(); // really needed or done by iw.dispose()?
     iw.dispose();
     ir.dispose();
